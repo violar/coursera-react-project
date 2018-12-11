@@ -22,8 +22,6 @@ class DishDetail extends Component{
             return (<div></div>);
         }
 
-        const dateOptions = { weekday: 'short', year: 'numeric', day: 'numeric' };
-
         return ( 
             <div>
                 <h4>Comments</h4>
@@ -31,7 +29,7 @@ class DishDetail extends Component{
                     {comments.map(c => {
                         return <li key={c.id}>
                                     <p>{c.comment}</p>
-                                    <p>-- {c.author}, {new Date(c.date).toLocaleDateString("en-US", dateOptions)}</p>
+                                    <p>-- {c.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(c.date)))}</p>
                                 </li>
                     })}
                 </ul>
@@ -45,12 +43,15 @@ class DishDetail extends Component{
         }
 
         return (
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    {this.renderDish(this.props.selectedDish)}
-                </div>
-                <div className="col-12 col-md-5 m-1">
-                    {this.renderComments(this.props.selectedDish.comments)}
+            
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        {this.renderDish(this.props.selectedDish)}
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        {this.renderComments(this.props.selectedDish.comments)}
+                    </div>
                 </div>
             </div>
         )

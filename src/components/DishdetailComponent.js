@@ -56,7 +56,6 @@ import { Link } from 'react-router-dom';
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        
                         <RenderDish dish={props.dish} />
                     </div>
                     <div className="col-12 col-md-5 m-1">

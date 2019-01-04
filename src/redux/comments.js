@@ -12,6 +12,7 @@ export const Comments = (state = COMMENTS, action) => {
             console.log("Comment: ", comment);
             //concat pushes new state object into array, cannot mutate current state
             return state.concat(comment)
+            
         default: 
             return state;
     }

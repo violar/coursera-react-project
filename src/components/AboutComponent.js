@@ -1,28 +1,51 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import {baseUrl} from '../shared/baseUrl'
+import { Loading } from './LoadingComponent';
+import { FadeTransform } from 'react-animation-components';
 
 
-function RenderLeader({leader}){
-    return(
-        <Media className="mt-3">
-            <Media className="col-12 col-md-2">
-                <Media object src={leader.image} />
-            </Media>
-            <Media body className="col-12 col-md-10">
-                <Media heading className="mt-0">{leader.name}</Media>
-                <p>{leader.designation}</p>
-                <p>{leader.description}</p>
-            </Media>
-        </Media>
-    );
+function RenderLeader({leader, isLoading, errMess}){
+    console.log("bbbbbbbbbbbbbbbbbb");
+    if (isLoading) {
+        console.log("cccccccccccccccc");
+        return (
+            <Loading />
+        );
+    }
+    else if (errMess) {
+        return (
+            <h4>{errMess}</h4>
+        );
+    }
+    else 
+        return(
+            <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
+                <Media className="mt-3">
+                    <Media className="col-12 col-md-2">
+                        <Media object src={baseUrl + leader.image} />
+                    </Media>
+                    <Media body className="col-12 col-md-10">
+                        <Media heading className="mt-0">{leader.name}</Media>
+                        <p>{leader.designation}</p>
+                        <p>{leader.description}</p>
+                    </Media>
+                </Media>
+            </FadeTransform>
+        );
 }
 
 function About(props) {
     const leaders = props.leaders.map((leader) => {
+        console.log(props.leadersLoading + "sssssssssssssssssssss")
         return (
             <div key={leader.id} className="col-12">
-                <RenderLeader leader={leader} />
+                <RenderLeader leader={leader} isLoading={props.leadersLoading} errMess={props.leadersErrMess} />
             </div>
         );
     });

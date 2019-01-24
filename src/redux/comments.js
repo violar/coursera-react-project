@@ -1,4 +1,3 @@
-import { COMMENTS } from '../shared/comments';
 import * as ActionTypes from './ActionTypes';
 
 // takes current state(assign a default state if none is provided) and an action that needs to take place

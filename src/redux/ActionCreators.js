@@ -88,13 +88,10 @@ export const fetchDishes = () => (dispatch) => {
     return fetch(baseUrl + 'dishes')
         .then(response => {
             if (response.ok) {
-                console.log("3");
                 return response;
-                console.log("4");
             }
             // error to handle bad response from server
             else {
-                console.log("5");
                 var error = new Error('Error' + response.status + ': ' + response.statusText);
                 error.response = response;
                 throw error;
@@ -168,7 +165,7 @@ export const addPromos = (promos) => ({
 //LEADERS
 
 export const fetchLeaders = () => (dispatch) => {
-    dispatch(leadersLoading());
+    dispatch(leadersLoading(true));
 
     return fetch(baseUrl + 'leaders')
         .then(response => {

@@ -6,10 +6,32 @@ import { Loading } from './LoadingComponent';
 import { FadeTransform } from 'react-animation-components';
 
 
-function RenderLeader({leader, isLoading, errMess}){
-    console.log("bbbbbbbbbbbbbbbbbb");
+function RenderLeader({leader}){
+    console.log("rendering about leader list 1d");
+    return(
+        <FadeTransform
+        in
+        transformProps={{
+            exitTransform: 'scale(0.5) translateY(-50%)'
+        }}>
+            <Media className="mt-3">{console.log("rendering leader now")}
+                <Media className="col-12 col-md-2">
+                    <Media object src={baseUrl + leader.image} />
+                </Media>
+                <Media body className="col-12 col-md-10">
+                    <Media heading className="mt-0">{leader.name}</Media>
+                    <p>{leader.designation}</p>
+                    <p>{leader.description}</p>
+                </Media>
+                {console.log("done rendering leader now")}</Media>
+        </FadeTransform>
+    );
+}
+
+function RenderLoadingLeader({isLoading, errMess, leaders}){
+    console.log("inside render loading leader");
     if (isLoading) {
-        console.log("cccccccccccccccc");
+        console.log("rendering loading component");
         return (
             <Loading />
         );
@@ -19,37 +41,19 @@ function RenderLeader({leader, isLoading, errMess}){
             <h4>{errMess}</h4>
         );
     }
-    else 
-        return(
-            <FadeTransform
-            in
-            transformProps={{
-                exitTransform: 'scale(0.5) translateY(-50%)'
-            }}>
-                <Media className="mt-3">
-                    <Media className="col-12 col-md-2">
-                        <Media object src={baseUrl + leader.image} />
-                    </Media>
-                    <Media body className="col-12 col-md-10">
-                        <Media heading className="mt-0">{leader.name}</Media>
-                        <p>{leader.designation}</p>
-                        <p>{leader.description}</p>
-                    </Media>
-                </Media>
-            </FadeTransform>
-        );
+    else {
+        return leaders.map((leader) => {
+            return (
+                <div key={leader.id} className="col-12">
+                    <RenderLeader leader={leader} />
+                </div>
+            );
+        });
+    }
 }
 
 function About(props) {
-    const leaders = props.leaders.map((leader) => {
-        console.log(props.leadersLoading + "sssssssssssssssssssss")
-        return (
-            <div key={leader.id} className="col-12">
-                <RenderLeader leader={leader} isLoading={props.leadersLoading} errMess={props.leadersErrMess} />
-            </div>
-        );
-    });
-
+    console.log("inside About Component 1b");
     return(
         <div className="container">
             <div className="row">
@@ -106,7 +110,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {leaders}
+                        <RenderLoadingLeader isLoading={props.leadersLoading} errMess={props.leadersErrMess} leaders={props.leaders}/>
                     </Media>
                 </div>
             </div>

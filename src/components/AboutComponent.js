@@ -7,14 +7,13 @@ import { FadeTransform } from 'react-animation-components';
 
 
 function RenderLeader({leader}){
-    console.log("rendering about leader list 1d");
     return(
         <FadeTransform
         in
         transformProps={{
             exitTransform: 'scale(0.5) translateY(-50%)'
         }}>
-            <Media className="mt-3">{console.log("rendering leader now")}
+            <Media className="mt-3">
                 <Media className="col-12 col-md-2">
                     <Media object src={baseUrl + leader.image} />
                 </Media>
@@ -23,15 +22,13 @@ function RenderLeader({leader}){
                     <p>{leader.designation}</p>
                     <p>{leader.description}</p>
                 </Media>
-                {console.log("done rendering leader now")}</Media>
+            </Media>
         </FadeTransform>
     );
 }
 
 function RenderLoadingLeader({isLoading, errMess, leaders}){
-    console.log("inside render loading leader");
     if (isLoading) {
-        console.log("rendering loading component");
         return (
             <Loading />
         );
@@ -53,7 +50,6 @@ function RenderLoadingLeader({isLoading, errMess, leaders}){
 }
 
 function About(props) {
-    console.log("inside About Component 1b");
     return(
         <div className="container">
             <div className="row">

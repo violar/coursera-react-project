@@ -9,12 +9,11 @@ import About from './AboutComponent';
 import DishDetail from './DishdetailComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, postFeedback } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapStateToProps = state => {
-  console.log("map state to props => initial state set up");
   return {
     dishes: state.dishes,
     comments: state.comments,
@@ -29,7 +28,8 @@ const mapDispatchToProps = dispatch => ({
   resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
   fetchComments: () => { dispatch(fetchComments()) },
   fetchPromos: () => { dispatch(fetchPromos()) },
-  fetchLeaders: () => { dispatch(fetchLeaders()) }
+  fetchLeaders: () => { dispatch(fetchLeaders()) },
+  postFeedback: (feedback) => { dispatch(postFeedback(feedback)) }
 });
 
 class Main extends Component {
@@ -39,22 +39,15 @@ class Main extends Component {
 
   }
 
-  componentDidMount() {
-    console.log("mounting begin ");
+  componentDidMount() { 
     this.props.fetchDishes();
-    console.log("dishes mounted");
     this.props.fetchComments();
-    console.log("comments mounted");
     this.props.fetchPromos();
-    console.log("promos mounted");
     this.props.fetchLeaders();
-    console.log("leaders mounted");
   }
 
   render() {
-    console.log("render method called");
     const HomePage = () => {
-      console.log("isLoading Home 1a");
       return(
           <Home 
               dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
@@ -81,7 +74,6 @@ class Main extends Component {
     };
 
     const AboutPage = () => {
-      console.log("isLoading About 1a");
       return (
           <About leaders={this.props.leaders.leaders}
             leadersLoading={this.props.leaders.isLoading}
@@ -89,19 +81,28 @@ class Main extends Component {
       );
     }
 
+    const ContactPage = () => {
+      return (
+          <Contact resetFeedbackForm={this.props.resetFeedbackForm}
+            postFeedback={this.props.postFeedback} />
+      );
+    }
+
     return (
       <div>
         <Header />
-            {console.log("before switch")}
-              <Switch>
-              {console.log("before home route")}<Route path="/home" component={HomePage} />{console.log("after home route")}
-              {console.log("before about route")} <Route exact path="/aboutus" component={AboutPage} />} />{console.log("after about route")}
+          <TransitionGroup>
+            <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+              <Switch location={this.props.location}>
+                  <Route path="/home" component={HomePage} />
+                  <Route exact path="/aboutus" component={AboutPage} />
                   <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
                   <Route path='/menu/:dishId' component={DishWithId} />
-                  <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+                  <Route exact path="/contactus" component={ContactPage} />
                   <Redirect to="/home" />
               </Switch>
-            
+            </CSSTransition>
+          </TransitionGroup>
         <Footer />
       </div>
     );
